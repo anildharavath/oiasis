@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Temperature converter</title>
+    <style>
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
+body {
+  padding-top: 100px;
+  background: linear-gradient(131deg, #f6b8b8, #1a8ff5);
+  height: 100%;
+  margin: 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  width: 1170px;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.card {
+  width: 350px;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  -webkit-box-shadow: 2px 3px 9px 4px rgba(176, 100, 255, 0.48);
+  box-shadow: 2px 3px 9px 4px rgba(176, 100, 255, 0.48);
+}
+
+.top {
+  background-image: linear-gradient(45deg, #f1a49b, #f54c4a);
+  padding-bottom: 100px;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+
+.user {
+  font-size: 20px;
+}
+
+#unit-converter {
+  border: none;
+  background: none;
+  font-size: 24px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+#unit-converter option {
+  margin: 40px;
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
+}
+
+#main-unit {
+  border: none;
+  background: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-size: 40px;
+  width: 160px;
+}
+
+#second-unit {
+  border: none;
+  background: none;
+  border-bottom: 1px solid #f54c4a;
+  color: #f54c4a;
+  font-size: 40px;
+  width: 160px;
+}
+
+.main-unit-options {
+  border: none;
+  background: none;
+  color:00FFFF;
+  font-size: 20px;
+}
+
+.main-unit-option {
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.second-unit-options {
+  border: none;
+  background: none;
+  color: #f54c4a;
+  font-size: 20px;
+}
+
+.bottom {
+  background-color: #fff;
+  padding: 80px 15px;
+}
+</style>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.2.3/dist/ionicons/ionicons.esm.js"
+    ></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="card">
+        <div class="top">
+          <div class="nav">
+            <p class="date"></p>
+            <ion-icon name="person" class="user"></ion-icon>
+          </div>
+          <ion-icon name="partly-sunny"></ion-icon>
+          <select id="unit-converter">
+            <option>Temperature</option>
+            <option>Currency</option>
+            <option>Length</option>
+          </select>
+          <div class="primary">
+            <input type="number" id="main-unit" />
+            <select class="main-unit-options reset">
+              <option>Celsius</option>
+              <option>Kelvin</option>
+              <option>Fahrenheit</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bottom">
+          <div class="secondary">
+            <input type="number" id="second-unit" />
+            <select class="second-unit-options reset">
+              <option>Kelvin</option>
+              <option>Fahrenheit</option>
+              <option>Celsius</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+let today = new Date();
+
+let month = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];
+
+let m = today.getMonth();
+
+let date = `${today.getDate()} ${month}, ${today.getFullYear()}`;
+// console.log(date);
+
+// document.querySelector('.date').textContent = date;
+// document.getElementsByClassName('date')[0].textContent = date;
+
+document.getElementById('main-unit').addEventListener('keyup', () => {
+  let mainOptions = document.querySelector('.main-unit-options');
+  let secondaryOptions = document.querySelector('.second-unit-options');
+  // options collection returns a collection of all <option> elements in a drop-down list.
+  // selectedIndex property sets or returns the index of the selected option in a drop-down list.
+  let mainUnit = mainOptions.options[
+    mainOptions.selectedIndex
+  ].textContent.toLowerCase();
+  let secondUnit = secondaryOptions.options[
+    secondaryOptions.selectedIndex
+  ].textContent.toLowerCase();
+
+  let numberTyped = parseInt(document.getElementById('main-unit').value); // returns string
+  console.log(numberTyped);
+
+  if (mainUnit === 'celsius') {
+    if (secondUnit === 'kelvin') {
+      document.getElementById('second-unit').value = numberTyped + 273.15;
+    } else if (secondUnit === 'fahrenheit') {
+      document.getElementById('second-unit').value = (numberTyped * 9) / 5 + 32;
+    } else {
+      document.getElementById('second-unit').value = numberTyped;
+    }
+  } else if (mainUnit === 'kelvin') {
+    if (secondUnit === 'celsius') {
+      document.getElementById('second-unit').value = numberTyped - 273.15;
+    } else if (mainUnit === 'fahrenheit') {
+      document.getElementById('second-unit').value =
+        ((numberTyped - 273.15) * 9) / 5 + 32;
+    } else {
+      document.getElementById('second-unit').value = numberTyped;
+    }
+  } else if (mainUnit === 'fahrenheit') {
+    if (secondUnit === 'celsius') {
+      document.getElementById('second-unit').value =
+        ((numberTyped - 32) * 5) / 9;
+    } else if (secondUnit === 'kelvin') {
+      document.getElementById('second-unit').value =
+        ((numberTyped - 32) * 5) / 9 + 273.15;
+    } else {
+      document.getElementById('second-unit').value = numberTyped;
+    }
+  }
+
+  // reset the values to make a new search
+  document.querySelectorAll('.reset').forEach((select) => {
+    select.addEventListener('change', () => {
+      document.getElementById('main-unit').value = '';
+      document.getElementById('second-unit').value = '';
+    });
+  });
+});
+</script>
+  </body>
+</html>
